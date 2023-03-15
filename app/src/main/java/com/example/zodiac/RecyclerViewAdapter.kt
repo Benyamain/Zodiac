@@ -1,5 +1,6 @@
 package com.example.zodiac
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +20,11 @@ class RecyclerViewAdapter(private val list: List<String>) : RecyclerView.Adapter
 
         val itemsViewModel = list[position]
         holder.textView.text = itemsViewModel
-
+        holder.itemView.setOnClickListener {
+            val intent = Intent(holder.itemView.context, ResultActivity::class.java)
+            intent.putExtra("selectedZodiac", itemsViewModel)
+            holder.itemView.context.startActivity(intent)
+        }
     }
 
     override fun getItemCount(): Int {
