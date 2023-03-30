@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class RecyclerViewAdapter(private val list: List<String>) : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
+class RecyclerViewAdapter(private val list: List<String>, private val horoscopeItem: List<HoroscopeItem>) : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -19,6 +19,8 @@ class RecyclerViewAdapter(private val list: List<String>) : RecyclerView.Adapter
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         val itemsViewModel = list[position]
+        val item = horoscopeItem[position]
+        holder.textView.text = item.title
         holder.textView.text = itemsViewModel
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.itemView.context, ResultActivity::class.java)

@@ -12,17 +12,42 @@ import kotlinx.coroutines.launch
 private const val TAG = "Aradito"
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var adapter: RecyclerViewAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         val recyclerView = findViewById<RecyclerView>(R.id.recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        val list = listOf("Aquarius", "Aries", "Cancer", "Capricorn", "Gemini", "Leo", "Libra", "Pisces", "Sagittarius", "Scorpio", "Taurus", "Virgo")
-        val adapter = RecyclerViewAdapter(list)
-        recyclerView.adapter = adapter
+        val list = listOf(
+            "Aquarius",
+            "Aries",
+            "Cancer",
+            "Capricorn",
+            "Gemini",
+            "Leo",
+            "Libra",
+            "Pisces",
+            "Sagittarius",
+            "Scorpio",
+            "Taurus",
+            "Virgo"
+        )
 
         database()
+
+        lifecycleScope.launch {
+            try {
+                val response = HoroscopeApi.retrofitService.getHoroscope()
+                adapter = RecyclerViewAdapter(list, response)
+                recyclerView.adapter = adapter
+                Log.d(TAG, "Response received: $response")
+            } catch (ex: Exception) {
+                Log.d(TAG, "Failed to fetch Horoscope Items", ex)
+            }
+        }
+
     }
 
     private fun database() {
